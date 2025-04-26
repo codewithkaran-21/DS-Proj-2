@@ -1,0 +1,9 @@
+from setuptools import find_packages, setup
+
+setup(name='ML_Pipeline_project',
+      version='0.0.1',
+      description='Machine Learning pipeline project',
+      author='Karan Singh',
+      author_email='godthatback21@gmail.com',
+      packages=find_packages()
+     )
