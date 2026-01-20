@@ -1,113 +1,171 @@
-💼 Income Classification - Census Data Project
+# Income Classification (Census Data)
 
-This project builds a machine learning model to predict whether an individual's income exceeds $50K per year based on census data. It covers all stages of the ML lifecycle — from data ingestion and preprocessing to model training, evaluation, and deployment via a Flask web application.
-🎯 Project Goals
+A production-ready machine learning project that predicts whether an individual's annual income exceeds $50K using Census (Adult) data. This repository contains exploratory analysis, preprocessing, model training, and a small Flask app to serve the trained model for real-time predictions.
 
-    Understand and explore the Census Income dataset.
+Table of Contents
+- [Project Overview](#project-overview)
+- [Dataset](#dataset)
+- [Key Features](#key-features)
+- [Repository Structure](#repository-structure)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Quick Install](#quick-install)
+  - [Preparing the Data](#preparing-the-data)
+  - [Training the Model](#training-the-model)
+  - [Running the Flask App](#running-the-flask-app)
+- [Usage Examples](#usage-examples)
+  - [Web Form (Interactive)](#web-form-interactive)
+  - [API (Programmatic)](#api-programmatic)
+- [Modeling & Evaluation](#modeling--evaluation)
+- [Possible Enhancements](#possible-enhancements)
+- [Contributing](#contributing)
+- [License](#license)
+- [Author & Contact](#author--contact)
+- [Acknowledgements](#acknowledgements)
 
-    Preprocess data and perform feature engineering.
+## Project Overview
+This project demonstrates an end-to-end ML workflow:
+- Ingest Census (Adult) data
+- Explore and clean data (EDA)
+- Feature engineering and preprocessing (encoding, scaling, selection)
+- Train and evaluate classification models (e.g., Logistic Regression, Random Forest)
+- Serve predictions via a lightweight Flask app for simple real-time inference
 
-    Train and evaluate a classifier to predict income class (<=50K or >50K).
+The aim is to provide a clear, replicable pipeline suitable for learning and lightweight demos.
 
-    Deploy the trained model using a Flask API for real-time inference.
+## Dataset
+This project uses the UCI "Adult" / Census Income dataset. It contains demographic features and is commonly used to predict whether income exceeds $50K/year.
 
-📁 Project Structure
+Typical columns include:
+- age, workclass, education, marital-status, occupation, race, sex, hours-per-week, capital-gain, capital-loss, etc.
 
-DS-Proj-2/
-├── app.py                       # Flask application for model inference
-├── ML_project_live_class.ipynb  # Notebook for EDA, training and testing
-├── notebook/
-│   └── data/                    # Raw dataset (.csv, .txt, etc.)
-├── src/                         # Core ML pipeline: ingestion, transformation, modeling
-├── templates/                   # HTML templates used by Flask
-├── myenv/                       # Virtual environment (can be ignored in version control)
-├── requirements.txt             # Python dependencies
-├── setup.py                     # Install script for packaging the project
-├── .gitignore                   # Git ignore rules
-├── LICENSE                      # License information (MIT)
-└── README.md                    # Project documentation (this file)
+(Place the raw dataset CSV files in `notebook/data/` as shown in this repository.)
 
-🚀 Getting Started
-1. Clone the Repository
+## Key Features Used
+- Age
+- Education Level
+- Workclass
+- Occupation
+- Marital Status
+- Hours per week
+- Race
+- Sex
+- Capital Gain / Loss
 
-git clone https://github.com/codewithkaran-21/DS-Proj-2.git
-cd DS-Proj-2
+## Repository Structure
+- app.py — Flask application for serving the trained model
+- ML_project_live_class.ipynb — Notebook for EDA, training, and evaluation
+- notebook/data/ — Raw dataset files (CSV/ TXT)
+- src/ — Python source modules for ingestion, preprocessing, modeling (transformers, pipelines)
+- templates/ — HTML templates used by Flask for the web form
+- requirements.txt — Python dependencies
+- setup.py — Optional packaging script
+- .gitignore — Files and folders ignored by Git
+- LICENSE — MIT License
 
-2. (Optional) Create and Activate Virtual Environment
+## Getting Started
 
-python -m venv myenv
-# Activate:
-# On Windows:
-myenv\Scripts\activate
-# On Unix or MacOS:
-source myenv/bin/activate
+### Prerequisites
+- Python 3.8+
+- pip
+- (Optional) virtualenv or venv
+- Git
 
-3. Install Dependencies
+### Quick Install
+1. Clone the repository
+   git clone https://github.com/codewithkaran-21/DS-Proj-2.git
+   cd DS-Proj-2
 
-pip install -r requirements.txt
+2. (Optional) Create & activate a virtual environment
+   python -m venv myenv
+   # Windows
+   myenv\Scripts\activate
+   # macOS / Linux
+   source myenv/bin/activate
 
-🧠 Project Workflow
+3. Install dependencies
+   pip install -r requirements.txt
 
-    Data Ingestion
-    Load census data from local files (under notebook/data/) into your ML pipeline.
+### Preparing the Data
+- Place the raw Census (Adult) dataset files under `notebook/data/` (the notebook expects data there).
+- Open `ML_project_live_class.ipynb` to run the full exploratory analysis, preprocessing and model training steps. The notebook walks through missing value handling, encoding, scaling and model evaluation.
 
-    Exploratory Data Analysis (EDA)
-    Conducted in the Jupyter Notebook ML_project_live_class.ipynb — includes feature exploration, missing value handling, and outlier detection.
+### Training the Model
+- The primary training flow is demonstrated in `ML_project_live_class.ipynb`. Follow the cells to:
+  - Load data from `notebook/data/`
+  - Preprocess (encoding, scaling)
+  - Train chosen models (Logistic Regression, Random Forest, etc.)
+  - Evaluate and persist the best model (e.g., `models/model.pkl`)
 
-    Data Preprocessing
-    Performed in src/ modules: encoding, scaling, train-test split, and feature selection.
+If `src/` contains training scripts or a defined training entrypoint, those can be used as an alternative to the notebook.
 
-    Model Training & Evaluation
-    Train classification models (e.g., Logistic Regression, Random Forest, etc.) and evaluate them using accuracy, precision, recall, F1-score.
+### Running the Flask App
+1. Ensure a trained model artifact exists (the Flask app loads a serialized model file — see notebook or src for default save path).
+2. Start the app:
+   python app.py
+3. Open your browser to:
+   http://127.0.0.1:5000/
+4. Use the provided web form to enter feature values and obtain a prediction.
 
-    Model Deployment
-    A trained model is loaded and served using a Flask application via app.py.
+If you prefer to call the app programmatically, review `app.py` to find the API route(s) available for POST requests.
 
-🌐 Running the Flask App
+## Usage Examples
 
-Once your model is trained and saved, run:
+Web form (interactive)
+- Visit the root URL after starting the Flask server, complete the fields and submit to see an income prediction.
 
-python app.py
+API (programmatic)
+- If the app exposes a prediction endpoint (e.g., `/predict`), send a JSON payload such as:
+  {
+    "age": 37,
+    "workclass": "Private",
+    "education": "Bachelors",
+    "occupation": "Exec-managerial",
+    "marital_status": "Married-civ-spouse",
+    "hours_per_week": 40,
+    "race": "White",
+    "sex": "Male",
+    "capital_gain": 0,
+    "capital_loss": 0
+  }
+- The endpoint will return a predicted label and (optionally) class probabilities depending on implementation.
 
-Then open your browser and go to:
+Note: Check `app.py` for exact endpoint path and input schema.
 
-http://127.0.0.1:5000/
+## Modeling & Evaluation
+- Models evaluated: Logistic Regression, Random Forest (examples — see notebook)
+- Metrics reported: Accuracy, Precision, Recall, F1-score. Confusion matrix and classification reports are generated in the notebook.
+- Use cross-validation and hold-out test set to validate the generalization performance.
 
-You can enter feature values through the web form and receive income predictions in real-time.
-🧪 Features Used in Prediction
+## Possible Enhancements
+- Add unit and integration tests for preprocessing, model code, and Flask routes
+- Containerize with Docker for consistent deployment
+- Experiment tracking with MLflow or Weights & Biases
+- Add automated data & model versioning with DVC
+- Deploy to a cloud provider (Heroku, AWS Elastic Beanstalk, GCP Cloud Run, Azure App Service)
+- Add CI/CD to train, test, and redeploy models automatically
 
-    Age
+## Contributing
+Contributions are welcome. Suggested workflow:
+1. Fork the repository
+2. Create a feature branch (git checkout -b feature/my-feature)
+3. Implement changes and tests
+4. Open a pull request describing your change and rationale
 
-    Education Level
+Please follow repository coding style and add tests where applicable.
 
-    Workclass
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-    Occupation
+## Author & Contact
+Karan Singh  
+GitHub: [codewithkaran-21](https://github.com/codewithkaran-21)
 
-    Marital Status
+## Acknowledgements
+- UCI Machine Learning Repository — Adult dataset
+- Any libraries used (scikit-learn, pandas, Flask, etc.)
 
-    Hours per week
-
-    Race and Sex
-
-    Capital Gain/Loss
-
-📌 Possible Enhancements
-
-Add unit tests for model and Flask routes
-
-Add Docker support for containerization
-
-Log experiments with MLflow
-
-Integrate DVC for data and model versioning
-
-    Deploy on cloud using AWS/GCP/Azure
-
-🧑‍💻 Author
-
-Karan Singh
-GitHub Profile
-📄 License
-
-This project is licensed under the MIT License – see the LICENSE file for details.
+Thank you for taking a look — if you'd like, I can:
+- Add a CONTRIBUTING.md and issue/pr templates
+- Create a Dockerfile and docker-compose example
+- Expand the README with example API request/response examples derived from app.py
